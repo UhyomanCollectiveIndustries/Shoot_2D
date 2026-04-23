@@ -14,7 +14,7 @@ void Bullet::update(float deltaTime) {
 void Bullet::draw(sf::RenderWindow& window) const {
 	//shapeの位置をプレイヤの位置(position)に合わせる
 	shape.setPosition(sf::Vector2f(position.x, position.y));
-	//プレイヤーを描画
+	//弾を描画
 	window.draw(shape);
 }
 

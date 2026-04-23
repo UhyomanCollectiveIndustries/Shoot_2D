@@ -27,7 +27,7 @@ public:
 		}
 	}
 
-	//’e‚Ì¶¬
+	//¶¬
 	T* alloc() {
 		if (freeCount == 0) return nullptr;
 
@@ -43,7 +43,7 @@ public:
 		return &pool[index];
 	}
 
-	//’e‚Ì‰ğ•ú
+	//‰ğ•ú
 	void free(T* e) {
 		if (!e) return;
 		

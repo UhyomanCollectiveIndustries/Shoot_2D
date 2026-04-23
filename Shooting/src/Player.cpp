@@ -2,7 +2,7 @@
 #include <iostream>
 #include <SFML/Window/Keyboard.hpp>
 
-Player::Player(ObjectPool<Bullet, 256>& pool) : bulletPool(pool) {
+Player::Player(ObjectPool<Bullet, 128>& pool) : bulletPool(pool) {
 	position = { 400.0f,500.0f };	//初期位置
 	//プレイヤーの形状とサイズを設定
 	shape.setSize({ 40.0f,40.0f });

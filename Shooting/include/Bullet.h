@@ -5,7 +5,7 @@ class Bullet : public Entity {
 public:
 	Bullet();
 
-	void update(float del) override;
+	void update(float deltaTime) override;
 	void draw(sf::RenderWindow& window) const override;
 
 	void init(float startX, float startY);

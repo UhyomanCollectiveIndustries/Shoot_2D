@@ -6,7 +6,7 @@
 
 class Player : public Entity {
 public:
-	Player(ObjectPool<Bullet, 256>& pool);
+	Player(ObjectPool<Bullet, 128>& pool);
 
 	void update(float deltaTime) override;
 	void draw(sf::RenderWindow & window) const override;
@@ -14,9 +14,9 @@ public:
 	void move(float deltaX, float deltaY);
 
 private:
-	float speed = 300.0f; //プレイヤーの移動速度
+	float speed = 300.0f;
 	mutable sf::RectangleShape shape;
 
-	ObjectPool<Bullet, 256>& bulletPool;
-	float shootCooldown = 1.0f;	//弾の発射間隔
+	ObjectPool<Bullet, 128>& bulletPool;
+	float shootCooldown = 1.0f;
 };
