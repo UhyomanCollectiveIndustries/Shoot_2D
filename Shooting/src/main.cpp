@@ -42,6 +42,10 @@ int main()
             }
         }
 
+        //====================
+        // XV
+        //====================
+
         //ƒvƒŒƒCƒ„‚ÌXV
 		player.update(deltaTime);
 
@@ -55,11 +59,6 @@ int main()
             }
         });
 
-        //‰ð•ú‘ÎÛ‚Ì’e‚ð‰ð•ú
-        for (Bullet* b : toFreeBullets) {
-            bulletPool.free(b);
-        }
-
         //“G‚ÌXV
         enemyPool.forEachActive([&](Enemy& e) {
             e.update(deltaTime);
@@ -70,10 +69,76 @@ int main()
             }
         });
 
+        //====================
+        // ‰ð•ú
+        //====================
+
+        //‰ð•ú‘ÎÛ‚Ì’e‚ð‰ð•ú
+        for (Bullet* b : toFreeBullets) {
+            bulletPool.free(b);
+        }
+
 		//‰ð•ú‘ÎÛ‚Ì“G‚ð‰ð•ú
         for (Enemy* e : toFreeEnemies) {
             enemyPool.free(e);
 		}
+
+        //======================
+        // Õ“Ë”»’è
+        //======================
+
+		//’e‚Æ“G‚ÌÕ“Ë”»’è(AABB)
+        bulletPool.forEachActive([&](Bullet& b) {
+
+            bool hit = false;   //Õ“Ëƒtƒ‰ƒO(d•¡–hŽ~)
+
+            enemyPool.forEachActive([&](Enemy& e) {
+
+				if (hit) return;   //‚·‚Å‚ÉÕ“Ë‚µ‚Ä‚¢‚éê‡‚ÍƒXƒLƒbƒv
+
+				//’e‚Ì‹éŒ`‚ðŽæ“¾
+				sf::FloatRect bulletRect(
+                    sf::Vector2f(b.getPosition().x, b.getPosition().y),
+                    sf::Vector2f(5.f, 15.f)
+                );
+				//“G‚Ì‹éŒ`‚ðŽæ“¾
+                sf::FloatRect enemyRect(
+                sf::Vector2f(e.getPosition().x, e.getPosition().y),
+                sf::Vector2f(40.f, 40.f)
+                );
+
+                ////Õ“Ë”»’è
+                //if (bulletRect.position.x > enemyRect.position.x + enemyRect.size.x ||
+                //    bulletRect.position.x + bulletRect.size.x < enemyRect.position.x ||
+                //    bulletRect.position.y > enemyRect.position.y + enemyRect.size.y ||
+                //    bulletRect.position.y + bulletRect.size.y < enemyRect.position.y) {
+                //    //Õ“Ë‚È‚µ
+                //}
+                //else {
+                //    //Õ“Ë‚ ‚è
+                //    toFreeBullets.push_back(&b); //’e‚ð‰ð•ú‘ÎÛ‚É’Ç‰Á
+                //    toFreeEnemies.push_back(&e);  //“G‚ð‰ð•ú‘ÎÛ‚É’Ç‰Á
+                //    hit = true;
+                //}
+                
+                //Õ“Ë”»’è(ŠÈŒ‰”Å)
+                if (bulletRect.findIntersection(enemyRect)) {
+                    toFreeBullets.push_back(&b); //’e‚ð‰ð•ú‘ÎÛ‚É’Ç‰Á
+                    toFreeEnemies.push_back(&e);  //“G‚ð‰ð•ú‘ÎÛ‚É’Ç‰Á
+                    hit = true;
+
+                    //‰ð•ú‘ÎÛ‚Ì’e‚ð‰ð•ú
+                    for (Bullet* b : toFreeBullets) {
+                        bulletPool.free(b);
+                    }
+
+                    //‰ð•ú‘ÎÛ‚Ì“G‚ð‰ð•ú
+                    for (Enemy* e : toFreeEnemies) {
+                        enemyPool.free(e);
+                    }
+                }
+            });
+        });
 
 		//ƒNƒ[ƒYƒCƒxƒ“ƒg‚Ìˆ—
         while (const std::optional event = window.pollEvent())
@@ -84,6 +149,10 @@ int main()
 
 		//‰æ–Ê‚ÌƒNƒŠƒA
         window.clear(sf::Color::Black);
+
+        //=================
+        // •`‰æ
+        //=================
 
 		//ƒvƒŒƒCƒ„‚Ì•`‰æ
 		player.draw(window);
