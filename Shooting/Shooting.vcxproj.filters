@@ -53,10 +53,18 @@
     <ClInclude Include="include\Enemy.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="include\SoundPool.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\airplane.png">
       <Filter>リソース ファイル</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\fonts\Orbitron-Black.ttf">
+      <Filter>リソース ファイル</Filter>
+    </Font>
   </ItemGroup>
 </Project>

@@ -2,7 +2,8 @@
 #include <iostream>
 #include <SFML/Window/Keyboard.hpp>
 
-Player::Player(ObjectPool<Bullet, 128>& pool) : bulletPool(pool) {
+Player::Player(ObjectPool<Bullet, 128>& bPool,SoundPool<8>& sPool)
+				: bulletPool(bPool),shootPool(sPool) {
 	position = { 400.0f,500.0f };	//初期位置
 	//プレイヤーの形状とサイズを設定
 	shape.setSize({ 40.0f,40.0f });
@@ -35,6 +36,7 @@ void Player::update(float deltaTime) {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space)) {
 		if (shootCooldown <= 0.0f) {
 			Bullet* bullet = bulletPool.alloc();
+			shootPool.play();
 			if (bullet) {
 				bullet->init(position.x + 17.5f, position.y);
 				shootCooldown = 0.3f; //0.3秒クールダウン
