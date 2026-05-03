@@ -3,14 +3,20 @@
 #include "../include/Enemy.h"
 #include "../include/ObjectPool.h"
 #include "../include/SoundPool.h"
+#include "../include/DebugWindow.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <algorithm>
 #include <iostream>
 #include <SFML/Audio.hpp>
+#define _CRTDBG_MAP_ALLOC
+#include <cstdlib>
+#include <crtdbg.h>
 
 int main()
 {
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
     //==========
     //サウンド
     //==========
@@ -18,6 +24,7 @@ int main()
     //BGM
     sf::Music bgm;
     if (!bgm.openFromFile("assets/sounds/maou_bgm_acoustic52.ogg")) {
+        std::cerr << "BGM load failed" << std::endl;
         return -1;
     }
     bgm.setLooping(true);
@@ -29,13 +36,15 @@ int main()
     sf::SoundBuffer shootBuf, explosionBuf;
 
     //発射音
-    if (!shootBuf.loadFromFile("assets/sounds/maou_bgm_acoustic52.ogg")) {
+    if (!shootBuf.loadFromFile("assets/sounds/maou_se_system42.ogg")) {
+        std::cerr << "SE1 load failed" << std::endl;
         return -1;
     }
 
     //爆発音
-    if (!explosionBuf.loadFromFile("assets/sounds/maou_bgm_acoustic52.ogg")) {
-        return -1;
+    if (!explosionBuf.loadFromFile("assets/sounds/maou_se_battle09.ogg")) {
+        std::cerr << "SE2 load failed" << std::endl;
+        //return -1;
     }
 
     //SoundPoolの作成
@@ -46,14 +55,12 @@ int main()
 
 	//randomの初期化
 	srand(static_cast<unsigned int>(time(nullptr)));
-
-    sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "Shoot_2D");
     
 	static ObjectPool<Bullet, 128> bulletPool; //弾のオブジェクトプール
 	static ObjectPool<Enemy, 128> enemyPool;   //敵のオブジェクトプール
     Player player(bulletPool,shootPool);
 
-	sf::Clock clock; //ゲームループのデルタタイム計測用
+	sf::Clock clock; //ゲームループのデルタタイム計測
 
     //スコア
     int score = 0;
@@ -76,6 +83,15 @@ int main()
     scoreText.setFillColor(sf::Color::White);
     scoreText.setPosition({ 10.0f,10.f });
 
+    //==============
+    //ウィンドウ設定
+    //==============
+
+    //ゲームウィンドウ
+    sf::RenderWindow window(sf::VideoMode({ 800, 600 }), "Shoot_2D");
+    //デバックウィンドウ
+    static DebugWindow debugWindow(bulletPool,enemyPool);
+    
     //メインループ
     while (window.isOpen())
     {
@@ -126,6 +142,9 @@ int main()
 				toFreeEnemies.push_back(&e);
             }
         });
+
+        //デバックウィンドウの更新
+        debugWindow.update();
 
         //======================
         // 衝突判定
@@ -178,12 +197,21 @@ int main()
         for (Enemy* e : toFreeEnemies) {
             enemyPool.free(e);
         }
-
-		//クローズイベントの処理
+        
+        //=============
+		//イベント処理
+        //=============
         while (const std::optional event = window.pollEvent())
         {
+            //クローズイベント
             if (event->is<sf::Event::Closed>())
                 window.close();
+
+            //F1キーでデバックウィンドウの表示切り替え
+            if (const auto* keyEvent = event->getIf<sf::Event::KeyPressed>()) {
+                if (keyEvent->code == sf::Keyboard::Key::F1)
+                    debugWindow.toggleVisible();
+            }
         }
 
 		//画面のクリア
@@ -209,6 +237,9 @@ int main()
         //スコアUIの描画
         scoreText.setString("Score: " + std::to_string(score));
         window.draw(scoreText);
+
+        //デバックウィンドウの描画
+        debugWindow.render();
 
         window.display();
     }

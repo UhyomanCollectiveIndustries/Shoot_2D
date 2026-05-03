@@ -70,4 +70,11 @@ public:
 			func(pool[activeList[i]]);
 		}
 	}
+
+	//ƒƒ‚ƒŠg—p—¦‚Ì‰Â‹‰»
+	int getActiveCount()const { return activeCount_; }
+	int getCapacity() const { return MAX; }
+	float getUsageRate() const {
+		return static_cast<float>(activeCount_) / static_cast<float>(MAX);
+	}
 };
