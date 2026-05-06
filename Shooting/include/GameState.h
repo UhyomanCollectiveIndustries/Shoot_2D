@@ -1,4 +1,6 @@
 #pragma once
+#include <SFML/Graphics.hpp>
+#include <memory>
 
 class GameState {
 public:
@@ -8,7 +10,7 @@ public:
     virtual void onExit() {}
 
     //çXêV
-    virtual void update(float dt) = 0;
+    virtual std::unique_ptr<GameState> update(float dt,sf::RenderWindow& window) = 0;
     //ï`âÊ
-    virtual void draw() const = 0;
+    virtual void draw(sf::RenderWindow& window) = 0;
 };

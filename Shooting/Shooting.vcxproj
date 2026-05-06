@@ -128,20 +128,24 @@
     <ClCompile Include="src\Bullet.cpp" />
     <ClCompile Include="src\DebugWindow.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
-    <ClCompile Include="src\Entity.cpp" />
-    <ClCompile Include="src\GameState.cpp" />
+    <ClCompile Include="src\GameOverState.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\PlayState.cpp" />
+    <ClCompile Include="src\TitleState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Bullet.h" />
     <ClInclude Include="include\DebugWindow.h" />
     <ClInclude Include="include\Enemy.h" />
     <ClInclude Include="include\Entity.h" />
+    <ClInclude Include="include\GameOverState.h" />
     <ClInclude Include="include\GameState.h" />
     <ClInclude Include="include\ObjectPool.h" />
     <ClInclude Include="include\Player.h" />
+    <ClInclude Include="include\PlayState.h" />
     <ClInclude Include="include\SoundPool.h" />
+    <ClInclude Include="include\TitleState.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\airplane.png" />

@@ -18,6 +18,7 @@ public:
 	virtual void draw(sf::RenderWindow& window) const = 0;
 
 	Vec2 getPosition() const { return position; }
+	void setPosition(float x, float y) { position.x = x; position.y = y; }
 
 	//¶‘¶ó‘Ô‚Ìæ“¾‚Æ”j‰ó
 	bool isAlive() const { return alive; }
